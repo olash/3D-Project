@@ -1,10 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
 
-// These would normally use process.env.NEXT_PUBLIC_SUPABASE_URL and KEY
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder-project.supabase.co";
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "public-anon-key";
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+if (!supabaseUrl || !supabaseKey) {
+  console.warn("Supabase credentials are missing. Please ensure .env.local is configured.");
+}
+
+export const supabase = createClient(supabaseUrl || "", supabaseKey || "");
 
 /**
  * Stub wrapper for uploading STL meshes to Supabase Storage
